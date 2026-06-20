@@ -1,8 +1,15 @@
 
-
 export default function ResumeAnalysis() {
   // TODO BACKEND: Load Gemini analysis response
   
+  const analysis =
+  JSON.parse(localStorage.getItem("analysis")) || {
+    atsScore: 0,
+    strengths: [],
+    weaknesses: [],
+    missingSkills: [],
+    recommendations: [],
+  };
   return (
     <div className="max-w-5xl mx-auto space-y-6">
       <div className="flex items-center justify-between">
@@ -11,7 +18,7 @@ export default function ResumeAnalysis() {
           <p className="text-slate-500 mt-1">Detailed breakdown of your resume against industry standards.</p>
         </div>
         <div className="bg-indigo-50 text-indigo-700 px-4 py-2 rounded-xl font-bold border border-indigo-100">
-          ATS Score: 0%
+          ATS Score: {analysis?.atsScore || 0}%
         </div>
       </div>
 
@@ -24,15 +31,14 @@ export default function ResumeAnalysis() {
             <h2 className="text-lg font-bold text-emerald-800">Strengths</h2>
           </div>
           <ul className="space-y-3 text-sm text-emerald-700">
-            <li className="flex items-start gap-2">
-              <span className="mt-1">•</span> Strong background in Java and Object-Oriented Programming.
-            </li>
-            <li className="flex items-start gap-2">
-              <span className="mt-1">•</span> Good academic projects showcasing full-stack capabilities.
-            </li>
-            <li className="flex items-start gap-2">
-              <span className="mt-1">•</span> Clear understanding of basic database design.
-            </li>
+           {
+  analysis.strengths?.map((item, index) => (
+    <li key={index} className="flex items-start gap-2">
+      <span className="mt-1">•</span>
+      {item}
+    </li>
+  ))
+}
           </ul>
         </div>
 
@@ -44,15 +50,14 @@ export default function ResumeAnalysis() {
             <h2 className="text-lg font-bold text-red-800">Weaknesses</h2>
           </div>
           <ul className="space-y-3 text-sm text-red-700">
-            <li className="flex items-start gap-2">
-              <span className="mt-1">•</span> Lack of production-level deployment experience.
-            </li>
-            <li className="flex items-start gap-2">
-              <span className="mt-1">•</span> No mention of containerization or orchestration.
-            </li>
-            <li className="flex items-start gap-2">
-              <span className="mt-1">•</span> Formatting is not ATS-friendly (complex tables used).
-            </li>
+            {
+  analysis.weaknesses?.map((item, index) => (
+    <li key={index} className="flex items-start gap-2">
+      <span className="mt-1">•</span>
+      {item}
+    </li>
+  ))
+}
           </ul>
         </div>
       </div>
@@ -61,11 +66,14 @@ export default function ResumeAnalysis() {
         <h2 className="text-lg font-bold text-slate-800 mb-4">Skill Gap Analysis</h2>
         <p className="text-sm font-semibold text-slate-600 mb-3">Missing Skills Detected:</p>
         <div className="flex flex-wrap gap-2 mb-6">
-          {["Docker", "Kubernetes", "AWS", "Microservices", "CI/CD", "Redis", "Kafka", "GraphQL"].map((skill) => (
-            <span key={skill} className="px-3 py-1 bg-slate-50 border border-slate-200 text-slate-600 rounded-lg text-sm font-medium">
-              {skill}
-            </span>
-          ))}
+          {analysis.missingSkills?.map((skill, index) => (
+  <span
+    key={index}
+    className="px-3 py-1 bg-slate-50 border border-slate-200 text-slate-600 rounded-lg text-sm font-medium"
+  >
+    {skill}
+  </span>
+))}
         </div>
 
         <p className="text-sm font-semibold text-slate-600 mb-3">Recommended Learning Order:</p>
@@ -83,14 +91,14 @@ export default function ResumeAnalysis() {
       <div className="bg-white rounded-3xl p-6 border border-slate-100 shadow-sm">
         <h2 className="text-lg font-bold text-slate-800 mb-4">Improvement Suggestions</h2>
         <div className="space-y-4">
-          <div className="p-4 bg-slate-50 rounded-2xl border border-slate-100">
-            <h3 className="font-bold text-slate-800 mb-1">Quantify Achievements</h3>
-            <p className="text-sm text-slate-600">Instead of "Optimized database queries", write "Optimized database queries, reducing load time by 30%".</p>
-          </div>
-          <div className="p-4 bg-slate-50 rounded-2xl border border-slate-100">
-            <h3 className="font-bold text-slate-800 mb-1">Reformat Structure</h3>
-            <p className="text-sm text-slate-600">Remove the columns in the education section to ensure ATS parsers can read the dates chronologically.</p>
-          </div>
+        {analysis.recommendations?.map((item, index) => (
+    <div
+      key={index}
+      className="p-4 bg-slate-50 rounded-2xl border border-slate-100"
+    >
+      <p className="text-sm text-slate-600">{item}</p>
+    </div>
+  ))}
         </div>
       </div>
     </div>

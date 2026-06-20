@@ -1,9 +1,19 @@
-
+import { useState, useEffect } from "react";
 
 export default function Profile() {
-  // TODO BACKEND: Load profile data
-  // TODO BACKEND: Load ATS history
-  
+  const [analysis, setAnalysis] = useState(null);
+
+  useEffect(() => {
+    try {
+      const storedAnalysis = localStorage.getItem("analysisResult");
+      if (storedAnalysis) {
+        setAnalysis(JSON.parse(storedAnalysis));
+      }
+    } catch (error) {
+      console.error("Error parsing analysis result from localStorage:", error);
+    }
+  }, []);
+
   return (
     <div className="max-w-5xl mx-auto space-y-6">
       <div className="mb-6">
@@ -15,10 +25,10 @@ export default function Profile() {
         <div className="space-y-6">
           <div className="bg-white rounded-3xl p-6 border border-slate-100 shadow-sm text-center">
             <div className="w-24 h-24 bg-indigo-100 rounded-full mx-auto flex items-center justify-center text-indigo-600 text-3xl font-extrabold mb-4 shadow-sm">
-              AJ
+              CU
             </div>
-            <h2 className="text-xl font-bold text-slate-800">Ashutosh Jha</h2>
-            <p className="text-sm text-slate-500 mb-6">ashutosh2006jha@gmail.com</p>
+            <h2 className="text-xl font-bold text-slate-800">CareerPilot User</h2>
+            <p className="text-sm text-slate-500 mb-6">Resume Analysis Account</p>
             <button className="w-full bg-slate-50 text-slate-700 py-2 rounded-xl font-bold text-sm border border-slate-200 hover:bg-slate-100 transition-colors">
               Edit Profile
             </button>
@@ -49,51 +59,40 @@ export default function Profile() {
         <div className="lg:col-span-2 space-y-6">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
              <div className="bg-white rounded-3xl p-5 border border-slate-100 shadow-sm text-center">
-               <div className="text-3xl font-extrabold text-blue-600 mb-1">4</div>
+               <div className="text-3xl font-extrabold text-blue-600 mb-1">{analysis ? 1 : 0}</div>
                <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">Resumes Analyzed</p>
              </div>
              <div className="bg-white rounded-3xl p-5 border border-slate-100 shadow-sm text-center">
-               <div className="text-3xl font-extrabold text-indigo-600 mb-1">12</div>
+               <div className="text-3xl font-extrabold text-indigo-600 mb-1">{analysis ? 1 : 0}</div>
                <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">Mock Interviews</p>
              </div>
              <div className="bg-white rounded-3xl p-5 border border-slate-100 shadow-sm text-center">
-               <div className="text-3xl font-extrabold text-emerald-600 mb-1">2</div>
-               <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">Milestones Reached</p>
+               <div className="text-3xl font-extrabold text-emerald-600 mb-1">{analysis?.atsScore || 0}</div>
+               <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">Latest ATS Score</p>
              </div>
           </div>
 
           <div className="bg-white rounded-3xl p-6 border border-slate-100 shadow-sm">
             <h3 className="font-bold text-slate-800 mb-4 border-b border-slate-100 pb-4">Resume History</h3>
             <div className="space-y-4">
-              <div className="flex items-center justify-between p-3 bg-slate-50 rounded-2xl border border-slate-100">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-white rounded-xl shadow-sm flex items-center justify-center text-red-500">
-                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" /></svg>
+              {analysis ? (
+                <div className="flex items-center justify-between p-3 bg-slate-50 rounded-2xl border border-slate-100">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-white rounded-xl shadow-sm flex items-center justify-center text-red-500">
+                      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" /></svg>
+                    </div>
+                    <div>
+                      <p className="text-sm font-bold text-slate-800">Latest Resume Analysis</p>
+                      <p className="text-xs text-slate-400">Generated using Gemini AI</p>
+                    </div>
                   </div>
-                  <div>
-                    <p className="text-sm font-bold text-slate-800">Ashutosh_Jha_Resume_V2.pdf</p>
-                    <p className="text-xs text-slate-400">Uploaded 2 days ago</p>
-                  </div>
-                </div>
-                <div className="text-right">
-                  <p className="text-sm font-extrabold text-indigo-600">ATS: 76%</p>
-                </div>
-              </div>
-
-              <div className="flex items-center justify-between p-3 bg-slate-50 rounded-2xl border border-slate-100">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-white rounded-xl shadow-sm flex items-center justify-center text-red-500">
-                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" /></svg>
-                  </div>
-                  <div>
-                    <p className="text-sm font-bold text-slate-800">Ashutosh_Jha_Resume_V1.pdf</p>
-                    <p className="text-xs text-slate-400">Uploaded 2 weeks ago</p>
+                  <div className="text-right">
+                    <p className="text-sm font-extrabold text-indigo-600">ATS: {analysis.atsScore}%</p>
                   </div>
                 </div>
-                <div className="text-right">
-                  <p className="text-sm font-extrabold text-slate-600">ATS: 45%</p>
-                </div>
-              </div>
+              ) : (
+                <p className="text-sm text-slate-500 py-2">No Resume Analysis Found</p>
+              )}
             </div>
           </div>
 
@@ -102,17 +101,10 @@ export default function Profile() {
             <div className="space-y-4">
                <div className="flex items-center justify-between">
                  <div>
-                   <p className="text-sm font-bold text-slate-800">Spring Boot & Java Core</p>
-                   <p className="text-xs text-slate-500">Medium Difficulty • 5 Questions</p>
+                   <p className="text-sm font-bold text-slate-800">AI Interview Coach</p>
+                   <p className="text-xs text-slate-500">Powered by Groq AI</p>
                  </div>
-                 <span className="px-3 py-1 bg-emerald-50 text-emerald-700 text-xs font-bold rounded-lg border border-emerald-100">Good</span>
-               </div>
-               <div className="flex items-center justify-between">
-                 <div>
-                   <p className="text-sm font-bold text-slate-800">React & Frontend Basics</p>
-                   <p className="text-xs text-slate-500">Easy Difficulty • 3 Questions</p>
-                 </div>
-                 <span className="px-3 py-1 bg-emerald-50 text-emerald-700 text-xs font-bold rounded-lg border border-emerald-100">Excellent</span>
+                 <span className="px-3 py-1 bg-emerald-50 text-emerald-700 text-xs font-bold rounded-lg border border-emerald-100">Active</span>
                </div>
             </div>
           </div>
