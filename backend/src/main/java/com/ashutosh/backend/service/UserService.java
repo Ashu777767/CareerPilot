@@ -39,4 +39,19 @@ public class UserService {
 
     return JwtUtil.generateToken(user.getEmail());
 }
+public User getUserByEmail(String email) {
+    return userRepository.findByEmail(email);
+}
+public User updateProfile(
+        String email,
+        String name,
+        String targetRole) {
+
+    User user = userRepository.findByEmail(email);
+
+    user.setName(name);
+    user.setTargetRole(targetRole);
+
+    return userRepository.save(user);
+}
 }

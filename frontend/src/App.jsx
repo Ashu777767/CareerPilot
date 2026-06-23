@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route, Outlet } from "react-router-dom
 
 import Register from "./pages/Register";
 import Login from "./pages/Login";
+import LandingPage from "./pages/LandingPage";
 
 import Dashboard from "./pages/Dashboard";
 import ResumeAnalysis from "./pages/ResumeAnalysis";
@@ -29,7 +30,10 @@ function App() {
     <Router>
       <Routes>
         {/* Public Routes */}
-        <Route path="/" element={<Register />} />
+        <Route path="/" element={<LandingPage />} />
+
+<Route path="/register" element={<Register />} />
+
         <Route path="/login" element={<Login />} />
 
         {/* Protected Layout Routes */}

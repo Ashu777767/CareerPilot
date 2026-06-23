@@ -1,15 +1,58 @@
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
 export default function ResumeAnalysis() {
-  // TODO BACKEND: Load Gemini analysis response
-  
-  const analysis =
-  JSON.parse(localStorage.getItem("analysis")) || {
+  const [analysis, setAnalysis] = useState({
     atsScore: 0,
     strengths: [],
     weaknesses: [],
     missingSkills: [],
     recommendations: [],
-  };
+  });
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchAnalysis = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const response = await axios.get("http://localhost:8080/analysis/latest", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        
+        // Update state with backend data
+        setAnalysis(response.data);
+        setLoading(false);
+      } catch (err) {
+        console.error("Error fetching analysis:", err);
+        setError("Failed to load resume analysis. Please ensure you are logged in and try again.");
+        setLoading(false);
+      }
+    };
+
+    fetchAnalysis();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="max-w-5xl mx-auto mt-10 text-center">
+        <p className="text-slate-500 font-medium animate-pulse">Loading AI Resume Analysis...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="max-w-5xl mx-auto mt-10 text-center">
+        <div className="bg-red-50 text-red-600 px-6 py-4 rounded-2xl border border-red-100 inline-block font-medium">
+          {error}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="max-w-5xl mx-auto space-y-6">
       <div className="flex items-center justify-between">

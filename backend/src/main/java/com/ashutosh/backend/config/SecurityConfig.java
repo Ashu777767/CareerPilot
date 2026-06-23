@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -25,33 +26,39 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    @Bean
+   @Bean
 public SecurityFilterChain securityFilterChain(HttpSecurity http)
         throws Exception {
+                   System.out.println("SECURITY CONFIG LOADED");
 
-   http
+    http
     .cors(cors -> {})
     .csrf(csrf -> csrf.disable())
-    .authorizeHttpRequests(auth -> auth
-        .requestMatchers(
-                "/register",
-                "/login",
-                "/upload",
-        "/api/interview/**"
-        ).permitAll()
 
-        .requestMatchers(
-                HttpMethod.OPTIONS,
-                "/**"
-        ).permitAll()
+    .sessionManagement(session ->
+            session.sessionCreationPolicy(
+                    SessionCreationPolicy.STATELESS
+            )
+    )
+        .authorizeHttpRequests(auth -> auth
+                .requestMatchers(
+                        "/register",
+                        "/login",
+                        "/api/interview/**"
+                ).permitAll()
 
-        .anyRequest()
-        .authenticated()
-)
-    .addFilterBefore(
-            jwtFilter,
-            UsernamePasswordAuthenticationFilter.class
-    );
+                .requestMatchers(
+                        HttpMethod.OPTIONS,
+                        "/**"
+                ).permitAll()
+
+                .anyRequest()
+                .authenticated() 
+        )
+        .addFilterBefore(
+                jwtFilter,
+                UsernamePasswordAuthenticationFilter.class
+        );
 
     return http.build();
 }

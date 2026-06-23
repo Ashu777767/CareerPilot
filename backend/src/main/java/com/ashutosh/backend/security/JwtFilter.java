@@ -16,13 +16,15 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @Component
 public class JwtFilter extends OncePerRequestFilter {
-
+    
+    
     @Override
     protected void doFilterInternal(
             HttpServletRequest request,
             HttpServletResponse response,
             FilterChain filterChain)
             throws ServletException, IOException {
+         System.out.println("JWT FILTER HIT");
 
         String authHeader =
                 request.getHeader("Authorization");
@@ -35,15 +37,19 @@ public class JwtFilter extends OncePerRequestFilter {
 
             if (JwtUtil.validateToken(token)) {
 
-                String email =
-                        JwtUtil.extractEmail(token);
+               String email =
+        JwtUtil.extractEmail(token);
 
-                UsernamePasswordAuthenticationToken auth =
-                        new UsernamePasswordAuthenticationToken(
-                                email,
-                                null,
-                                Collections.emptyList()
-                        );
+System.out.println("AUTH HEADER = " + authHeader);
+System.out.println("TOKEN VALID = " + JwtUtil.validateToken(token));
+System.out.println("EMAIL = " + email);
+
+               UsernamePasswordAuthenticationToken auth =
+        UsernamePasswordAuthenticationToken.authenticated(
+                email,
+                null,
+                Collections.emptyList()
+        );
 
                 auth.setDetails(
                         new WebAuthenticationDetailsSource()

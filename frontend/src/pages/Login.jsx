@@ -112,7 +112,7 @@ const Login = () => {
       <div className="w-full max-w-[1100px] lg:h-auto lg:min-h-[600px] lg:max-h-[85vh] bg-white rounded-2xl lg:rounded-3xl shadow-xl flex flex-col lg:flex-row overflow-hidden border border-slate-200">
         
         {/* LEFT SIDE - Hero & Branding */}
-        <div className="hidden lg:flex lg:w-[50%] relative flex-col justify-between p-10 xl:p-14 bg-gradient-to-br from-blue-600 via-indigo-600 to-violet-800">
+        <div className="hidden lg:flex lg:w-[50%] relative flex-col justify-center p-10 xl:p-14 bg-gradient-to-br from-blue-600 via-indigo-600 to-violet-800">
           
           <div className="absolute inset-0 overflow-hidden pointer-events-none">
             <div className="absolute top-[-10%] left-[-10%] w-[60%] h-[60%] rounded-full bg-blue-400 opacity-20 blur-[100px] mix-blend-overlay"></div>
@@ -121,11 +121,24 @@ const Login = () => {
 
           <div className="relative z-10 flex flex-col gap-8 xl:gap-10">
             <div className="flex items-center gap-3 text-white">
-              <div className="w-10 h-10 bg-white/10 backdrop-blur-md rounded-xl flex items-center justify-center border border-white/20 shadow-lg">
-                <Compass className="w-6 h-6 text-white" strokeWidth={2} />
-              </div>
-              <span className="text-2xl font-bold tracking-tight">CareerPilot</span>
-            </div>
+  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-indigo-600 to-purple-600 flex items-center justify-center shadow-lg">
+    <svg
+      className="w-6 h-6 text-white"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M12 3L18.5 18L12 14.5L5.5 18L12 3Z" />
+    </svg>
+  </div>
+
+  <span className="text-2xl font-bold tracking-tight">
+    CareerPilot
+  </span>
+</div>
 
             <div className="space-y-4 max-w-lg">
               <span className="inline-block py-1.5 px-3 bg-white/10 border border-white/20 rounded-full text-blue-100 text-xs font-bold tracking-wider uppercase backdrop-blur-sm shadow-sm">
